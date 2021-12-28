@@ -70,13 +70,14 @@ jobs:
         if: runner.os == 'Windows'
         run: |
            $delegator_subcontracts = "accumulator","adder","subber"
+           echo $ENV
            foreach ($contract in $delegator_subcontracts) {
                echo "Processing delegator contract: $contract";
-               cargo contract ${{ matrix.job }} --verbose --manifest-path examples/delegator/${contract}/Cargo.toml; &
+              #  cargo contract ${{ matrix.job }} --verbose --manifest-path examples/delegator/${contract}/Cargo.toml;
            }
            foreach ($example in Get-ChildItem  -Directory "examples\*") {
                echo "Processing example: $example";
-               cargo contract ${{ matrix.job }} --verbose --manifest-path=$example/Cargo.toml; &
+              #  cargo contract ${{ matrix.job }} --verbose --manifest-path=$example/Cargo.toml;
            }
 
       # - name: ${{ matrix.job }} examples on ${{ matrix.platform }}-${{ matrix.toolchain }}
