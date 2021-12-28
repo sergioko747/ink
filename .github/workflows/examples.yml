@@ -33,32 +33,32 @@ jobs:
       RUST_BACKTRACE: full
     steps:
 
-      - uses: actions/setup-node@v2
-      - run: npm install wasm-opt -g
+      # - uses: actions/setup-node@v2
+      # - run: npm install wasm-opt -g
 
-      - name: Checkout sources & submodules
-        uses: actions/checkout@master
-        with:
-          fetch-depth: 1
-          submodules: recursive
+      # - name: Checkout sources & submodules
+      #   uses: actions/checkout@master
+      #   with:
+      #     fetch-depth: 1
+      #     submodules: recursive
 
-      - name: Install toolchain
-        id: toolchain
-        uses: actions-rs/toolchain@master
-        with:
-          profile: minimal
-          toolchain: ${{ matrix.toolchain }}
-          components: rust-src
-          override: true
+      # - name: Install toolchain
+      #   id: toolchain
+      #   uses: actions-rs/toolchain@master
+      #   with:
+      #     profile: minimal
+      #     toolchain: ${{ matrix.toolchain }}
+      #     components: rust-src
+      #     override: true
 
-      - name: Rust Cache
-        uses: Swatinem/rust-cache@v1.2.0
+      # - name: Rust Cache
+      #   uses: Swatinem/rust-cache@v1.2.0
 
-      - name: Install `cargo-contract` `master`
-        uses: actions-rs/cargo@v1
-        with:
-            command: install
-            args: --git https://github.com/paritytech/cargo-contract.git
+      # - name: Install `cargo-contract` `master`
+      #   uses: actions-rs/cargo@v1
+      #   with:
+      #       command: install
+      #       args: --git https://github.com/paritytech/cargo-contract.git
 
       - name: Output versions
         run: |
@@ -71,11 +71,11 @@ jobs:
         run: |
            $delegator_subcontracts = "accumulator","adder","subber"
            echo $ENV
-           foreach ($contract in $delegator_subcontracts) {
+           foreach -Parallel ($contract in $delegator_subcontracts) {
                echo "Processing delegator contract: $contract";
               #  cargo contract ${{ matrix.job }} --verbose --manifest-path examples/delegator/${contract}/Cargo.toml;
            }
-           foreach ($example in Get-ChildItem  -Directory "examples\*") {
+           foreach -Parallel ($example in Get-ChildItem  -Directory "examples\*") {
                echo "Processing example: $example";
               #  cargo contract ${{ matrix.job }} --verbose --manifest-path=$example/Cargo.toml;
            }
