@@ -72,21 +72,21 @@ jobs:
            $delegator_subcontracts = "accumulator","adder","subber"
            foreach ($contract in $delegator_subcontracts) {
                echo "Processing delegator contract: $contract";
-               cargo contract ${{ matrix.job }} --verbose --manifest-path examples/delegator/${contract}/Cargo.toml;
+               cargo contract ${{ matrix.job }} --verbose --manifest-path examples/delegator/${contract}/Cargo.toml; &
            }
            foreach ($example in Get-ChildItem  -Directory "examples\*") {
                echo "Processing example: $example";
-               cargo contract ${{ matrix.job }} --verbose --manifest-path=$example/Cargo.toml;
+               cargo contract ${{ matrix.job }} --verbose --manifest-path=$example/Cargo.toml; &
            }
 
-      - name: ${{ matrix.job }} examples on ${{ matrix.platform }}-${{ matrix.toolchain }}
-        if: runner.os == 'macOS'
-        run: |
-           for contract in ${DELEGATOR_SUBCONTRACTS}; do
-               echo "Processing delegator contract: $contract";
-               cargo contract ${{ matrix.job }} --verbose --manifest-path examples/delegator/${contract}/Cargo.toml;
-           done
-           for example in examples/*/; do
-               echo "Processing example: $example";
-               cargo contract ${{ matrix.job }} --verbose --manifest-path=$example/Cargo.toml;
-           done
+      # - name: ${{ matrix.job }} examples on ${{ matrix.platform }}-${{ matrix.toolchain }}
+      #   if: runner.os == 'macOS'
+      #   run: |
+      #      for contract in ${DELEGATOR_SUBCONTRACTS}; do
+      #          echo "Processing delegator contract: $contract";
+      #          cargo contract ${{ matrix.job }} --verbose --manifest-path examples/delegator/${contract}/Cargo.toml;
+      #      done
+      #      for example in examples/*/; do
+      #          echo "Processing example: $example";
+      #          cargo contract ${{ matrix.job }} --verbose --manifest-path=$example/Cargo.toml;
+      #      done
