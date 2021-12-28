@@ -71,11 +71,11 @@ jobs:
         run: |
            $delegator_subcontracts = "accumulator","adder","subber"
            echo $ENV
-           foreach -Parallel ($contract in $delegator_subcontracts) {
+           ForEach-Object -Parallel ($contract in $delegator_subcontracts) {
                echo "Processing delegator contract: $contract";
               #  cargo contract ${{ matrix.job }} --verbose --manifest-path examples/delegator/${contract}/Cargo.toml;
            }
-           foreach -Parallel ($example in Get-ChildItem  -Directory "examples\*") {
+           ForEach-Object -Parallel ($example in Get-ChildItem  -Directory "examples\*") {
                echo "Processing example: $example";
               #  cargo contract ${{ matrix.job }} --verbose --manifest-path=$example/Cargo.toml;
            }
