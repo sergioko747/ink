@@ -60,11 +60,11 @@ jobs:
       #       command: install
       #       args: --git https://github.com/paritytech/cargo-contract.git
 
-      - name: Output versions
-        run: |
-            wasm-opt --version
-            cargo -vV
-            cargo contract --version
+      # - name: Output versions
+      #   run: |
+      #       wasm-opt --version
+      #       cargo -vV
+      #       cargo contract --version
 
       - name: ${{ matrix.job }} examples on ${{ matrix.platform }}-${{ matrix.toolchain }}
         if: runner.os == 'Windows'
