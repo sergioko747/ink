@@ -21,13 +21,32 @@ jobs:
     strategy:
       matrix:
         platform:
-          - macos-latest
+          # - macos-latest
           - windows-latest
         toolchain:
           - nightly
         job:
           - build
           - test
+        contract:
+          - examples/delegator/accumulator
+          - examples/delegator/adder
+          - examples/delegator/subber
+          - examples/contract-transfer
+          - examples/contract-terminate
+          - examples/dns
+          - examples/erc1155
+          - examples/erc20
+          - examples/erc721
+          - examples/flipper
+          - examples/incrementer
+          - examples/multisig
+          - examples/proxy
+          - examples/delegator
+          - examples/rand-extension
+          - examples/trait-erc20
+          - examples/trait-flipper
+          - examples/trait-incrementer
     runs-on: ${{ matrix.platform }}
     env:
       RUST_BACKTRACE: full
@@ -66,20 +85,20 @@ jobs:
             cargo -vV
             cargo contract --version
 
-      - name: ${{ matrix.job }} examples on ${{ matrix.platform }}-${{ matrix.toolchain }}
+      - name: ${{ matrix.job }} examples on ${{ matrix.platform }}-${{ matrix.toolchain }}-${{ matrix.contract }}
         if: runner.os == 'Windows'
         run: |
-           $delegator_subcontracts = "accumulator","adder","subber"
-           echo $ENV
-           $delegator_subcontracts | ForEach-Object  { 
+          #  $delegator_subcontracts = "accumulator","adder","subber"
+          #  echo $ENV
+          #  $delegator_subcontracts | ForEach-Object  { 
            # ($contract in $delegator_subcontracts) 
-               echo "Processing delegator contract: $_";
-               cargo contract ${{ matrix.job }} --verbose --manifest-path examples/delegator/$_/Cargo.toml;
-           }
-           Get-ChildItem  -Directory "examples\*" | ForEach-Object {
-               echo "Processing example: $_";
-               cargo contract ${{ matrix.job }} --verbose --manifest-path=$_/Cargo.toml;
-           }
+               echo "Processing delegator contract: ${{ matrix.contract }}";
+               cargo contract ${{ matrix.job }} --verbose --manifest-path ${{ matrix.contract }}/Cargo.toml;
+          #  }
+          #  Get-ChildItem  -Directory "examples\*" | ForEach-Object {
+          #      echo "Processing example: $_";
+          #      cargo contract ${{ matrix.job }} --verbose --manifest-path=$_/Cargo.toml;
+          #  }
 
       # - name: ${{ matrix.job }} examples on ${{ matrix.platform }}-${{ matrix.toolchain }}
       #   if: runner.os == 'macOS'
